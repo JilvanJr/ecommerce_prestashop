@@ -2,6 +2,9 @@ package homepage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import base.BaseTests;
@@ -22,6 +25,7 @@ public class HomePageTests extends BaseTests {
 		assertThat(produtosNoCarrinho, is (1));
 	}
 	
+	ProdutoPage produtoPage;
 	@Test
 	public void testValidarDetalhesDoProduto_DescricaoEValorIguais() {
 		int indice = 0;
@@ -31,7 +35,7 @@ public class HomePageTests extends BaseTests {
 		System.out.println(nomeProduto_HomePage);
 		System.out.println(precoProduto_HomePage);
 		
-		ProdutoPage produtoPage = homePage.clicarProduto(indice);
+		produtoPage = homePage.clicarProduto(indice);
 		
 		String nomeProduto_ProdutoPage = produtoPage.obterNomeProduto();
 		String precoProduto_ProdutoPage = produtoPage.obterPrecoProduto();
@@ -43,12 +47,35 @@ public class HomePageTests extends BaseTests {
 		assertThat(precoProduto_HomePage, is(precoProduto_ProdutoPage));
 	}
 	
+	LoginPage loginPage;
 	@Test
 	public void testLoginComSucesso_UsuarioLogado() {
-		LoginPage loginPage = homePage.clicarBotaoSignIn();
+		loginPage = homePage.clicarBotaoSignIn();
 		loginPage.preencherEmail("marcelo@teste.com");
 		loginPage.preencherPassword("marcelo");
 		loginPage.clicarBotaoSignIn();
 		assertThat(homePage.estaLogado("Marcelo Bittencourt"), is (true));
+		carregarPaginaInicial();
+	}
+	
+	@Test
+	public void incluirProdutosNoCarrinho_ProdutoIncluidoComSucesso() {
+		if(!homePage.estaLogado("Marcelo Bittencourt")) {
+			testLoginComSucesso_UsuarioLogado();
+		}
+		testValidarDetalhesDoProduto_DescricaoEValorIguais();
+		
+		List<String> listaOpcoes = produtoPage.obterOpcoesSelecionadas();
+		System.out.println(listaOpcoes.get(0));
+		System.out.println("Tamanho da lista:" + listaOpcoes.size());
+		
+		produtoPage.selecionaOpcaoDropDown("M");
+		listaOpcoes = produtoPage.obterOpcoesSelecionadas();
+		System.out.println(listaOpcoes.get(0));
+		System.out.println("Tamanho da lista:" + listaOpcoes.size());
+		
+		produtoPage.selecionarCorPreta();
+		produtoPage.alterarQuantidade(2);
+		produtoPage.clicarBotaoAddToCart();
 	}
 }
