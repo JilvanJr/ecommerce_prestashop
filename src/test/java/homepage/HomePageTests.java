@@ -2,13 +2,12 @@ package homepage;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
 import base.BaseTests;
 import pages.LoginPage;
+import pages.ModalProdutoPage;
 import pages.ProdutoPage;
 
 public class HomePageTests extends BaseTests {
@@ -76,6 +75,9 @@ public class HomePageTests extends BaseTests {
 		
 		produtoPage.selecionarCorPreta();
 		produtoPage.alterarQuantidade(2);
-		//produtoPage.clicarBotaoAddToCart();
+		ModalProdutoPage modalProdutoPage = produtoPage.clicarBotaoAddToCart();
+		//assertThat(modalProdutoPage.obterMensagemProdutoAdicionado(), is("Product successfully added to your shopping cart"));
+		// Elemento retorna um ponto no inicio, abaixo me retorna apenas o final 
+		assertTrue(modalProdutoPage.obterMensagemProdutoAdicionado().endsWith("Product successfully added to your shopping cart"));
 	}
 }
