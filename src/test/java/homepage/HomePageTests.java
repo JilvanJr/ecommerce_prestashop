@@ -76,6 +76,6 @@ public class HomePageTests extends BaseTests {
 		
 		produtoPage.selecionarCorPreta();
 		produtoPage.alterarQuantidade(2);
-		produtoPage.clicarBotaoAddToCart();
+		//produtoPage.clicarBotaoAddToCart();
 	}
 }
