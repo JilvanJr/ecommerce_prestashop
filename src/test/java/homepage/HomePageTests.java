@@ -25,6 +25,7 @@ public class HomePageTests extends BaseTests {
 	}
 	
 	ProdutoPage produtoPage;
+	String nomeProduto_ProdutoPage;
 	@Test
 	public void testValidarDetalhesDoProduto_DescricaoEValorIguais() {
 		int indice = 0;
@@ -36,7 +37,7 @@ public class HomePageTests extends BaseTests {
 		
 		produtoPage = homePage.clicarProduto(indice);
 		
-		String nomeProduto_ProdutoPage = produtoPage.obterNomeProduto();
+		nomeProduto_ProdutoPage = produtoPage.obterNomeProduto();
 		String precoProduto_ProdutoPage = produtoPage.obterPrecoProduto();
 		
 		System.out.println(nomeProduto_ProdutoPage);
@@ -59,6 +60,10 @@ public class HomePageTests extends BaseTests {
 	
 	@Test
 	public void incluirProdutosNoCarrinho_ProdutoIncluidoComSucesso() {
+		String tamanhoProduto = "M";
+		String corProduto = "Black";
+		int quantidadeProduto = 2;
+		
 		if(!homePage.estaLogado("Marcelo Bittencourt")) {
 			testLoginComSucesso_UsuarioLogado();
 		}
@@ -68,16 +73,33 @@ public class HomePageTests extends BaseTests {
 		System.out.println(listaOpcoes.get(0));
 		System.out.println("Tamanho da lista:" + listaOpcoes.size());
 		
-		produtoPage.selecionaOpcaoDropDown("M");
+		produtoPage.selecionaOpcaoDropDown(tamanhoProduto);
 		listaOpcoes = produtoPage.obterOpcoesSelecionadas();
 		System.out.println(listaOpcoes.get(0));
 		System.out.println("Tamanho da lista:" + listaOpcoes.size());
 		
 		produtoPage.selecionarCorPreta();
-		produtoPage.alterarQuantidade(2);
+		produtoPage.alterarQuantidade(quantidadeProduto);
 		ModalProdutoPage modalProdutoPage = produtoPage.clicarBotaoAddToCart();
-		//assertThat(modalProdutoPage.obterMensagemProdutoAdicionado(), is("Product successfully added to your shopping cart"));
+		
 		// Elemento retorna um ponto no inicio, abaixo me retorna apenas o final 
 		assertTrue(modalProdutoPage.obterMensagemProdutoAdicionado().endsWith("Product successfully added to your shopping cart"));
+		
+		assertThat(modalProdutoPage.obterDescriçãoProduto().toUpperCase(), is(nomeProduto_ProdutoPage.toUpperCase()));
+		
+		String precoProdutoString = modalProdutoPage.obterPrecoProduto();
+		precoProdutoString = precoProdutoString.replace("$", "");
+		Double precoProduto = Double.parseDouble(precoProdutoString);
+		
+		assertThat(modalProdutoPage.obterTamanhoProduto(), is(tamanhoProduto));
+		assertThat(modalProdutoPage.obterCorProduto(), is(corProduto));
+		assertThat(modalProdutoPage.obterQuantidadeProduto(), is(Integer.toString(quantidadeProduto)));
+		
+		String subTotalString = modalProdutoPage.obterSubTotal();
+		subTotalString = subTotalString.replace("$", "");
+		Double subTotal = Double.parseDouble(subTotalString);
+		
+		Double subTotalCalculado = quantidadeProduto * precoProduto;
+		assertThat(subTotal, is(subTotalCalculado));
 	}
 }
