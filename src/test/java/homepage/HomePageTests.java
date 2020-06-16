@@ -124,6 +124,8 @@ public class HomePageTests extends BaseTests {
 	Double esperado_totalTaxIncTotal = esperado_totalTaxExclTotal;
 	Double esperado_taxesTotal = 0.00;
 	
+	String esperado_nomeCliente = "Marcelo Bittencourt";
+	
 	CarrinhoPage carrinhoPage;
  	@Test
 	public void irParaCarrinho_InformacoesPersistidas() {
@@ -170,5 +172,25 @@ public class HomePageTests extends BaseTests {
  		checkoutPage = carrinhoPage.clicarBotaoProceedToCheckout();
  		
  		assertThat(Funcoes.removeCifraoDevolveDouble(checkoutPage.obter_totalTaxIncTotal()), is(esperado_totalTaxExclTotal));
+ 		//assertThat(checkoutPage.obter_nomeCliente(), is(esperado_nomeCliente));
+ 		assertTrue(checkoutPage.obter_nomeCliente().startsWith(esperado_nomeCliente)); // startsWith = começa com
+ 		checkoutPage.clicarBotaoContinueAddress();
+ 		
+ 		String encontrado_shippingValor = checkoutPage.obter_shippingValor();
+ 		encontrado_shippingValor = Funcoes.removeTexto(encontrado_shippingValor, " tax excl.");
+ 		Double encontrado_shippingValor_Double = Funcoes.removeCifraoDevolveDouble(encontrado_shippingValor);
+ 		assertThat(encontrado_shippingValor_Double, is(esperado_shippingTotal));
+ 		checkoutPage.clicarBotaoContinueShipping();
+ 		
+ 		// selected option "Pay by check"
+ 		checkoutPage.selecionarRadioPayByCheck();
+ 		// validate check amount
+ 		String encontrado_amountPayByCheck = checkoutPage.obter_amountPayByCheck();
+ 		encontrado_amountPayByCheck = Funcoes.removeTexto(encontrado_amountPayByCheck, " (tax incl.)");
+ 		Double encontrado_amountPayByCheck_Double = Funcoes.removeCifraoDevolveDouble(encontrado_amountPayByCheck);
+ 		assertThat(encontrado_amountPayByCheck_Double, is(esperado_totalTaxIncTotal));
+ 		// click on the "I agree" option
+ 		checkoutPage.selecionarCheckBoxIAgree();
+ 		assertTrue(checkoutPage.estaSelecionadoCheckboxIAgree());
  	}
 }
