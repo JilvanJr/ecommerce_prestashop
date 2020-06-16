@@ -64,7 +64,7 @@ public class HomePageTests extends BaseTests {
 	
 	ModalProdutoPage modalProdutoPage;
 	@Test
-	public void incluirProdutosNoCarrinho_ProdutoIncluidoComSucesso() {
+	public void testIncluirProdutosNoCarrinho_ProdutoIncluidoComSucesso() {
 		String tamanhoProduto = "M";
 		String corProduto = "Black";
 		int quantidadeProduto = 2;
@@ -126,8 +126,8 @@ public class HomePageTests extends BaseTests {
 	
 	CarrinhoPage carrinhoPage;
  	@Test
-	public void irParaCarrinho_InformacoesPersistidas() {
-		incluirProdutosNoCarrinho_ProdutoIncluidoComSucesso();
+	public void testIrParaCarrinho_InformacoesPersistidas() {
+		testIncluirProdutosNoCarrinho_ProdutoIncluidoComSucesso();
 		
 		carrinhoPage = modalProdutoPage.clicarBotaoPreceedToCheckout();
 		
@@ -164,8 +164,8 @@ public class HomePageTests extends BaseTests {
  	
  	CheckoutPage checkoutPage;
  	@Test
- 	public void IrParaCheckout_FreteMaisPagamentoEnderecoListadosOk() {
- 		irParaCarrinho_InformacoesPersistidas();
+ 	public void testIrParaCheckout_FreteMaisPagamentoEnderecoListadosOk() {
+ 		testIrParaCarrinho_InformacoesPersistidas();
  		
  		checkoutPage = carrinhoPage.clicarBotaoProceedToCheckout();
  		
@@ -193,8 +193,8 @@ public class HomePageTests extends BaseTests {
  	}
  	
  	@Test
- 	public void finalizarPedido_pedidoFinalizadoComSucesso() {
- 		IrParaCheckout_FreteMaisPagamentoEnderecoListadosOk();
+ 	public void testFinalizarPedido_pedidoFinalizadoComSucesso() {
+ 		testIrParaCheckout_FreteMaisPagamentoEnderecoListadosOk();
  		
  		// click the button to confirm order
  		PedidoPage pedidoPage = checkoutPage.clicarBotaoConfirmaPedido();
