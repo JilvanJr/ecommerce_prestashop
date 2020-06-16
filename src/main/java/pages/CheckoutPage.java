@@ -15,6 +15,7 @@ public class CheckoutPage {
 	private By radioPayByCheck = By.id("payment-option-1");
 	private By amountPayByCheck = By.cssSelector("#payment-option-1-additional-information > section > dl > dd:nth-child(2)");
 	private By checkboxIAgree = By.id("conditions_to_approve[terms-and-conditions]");
+	private By botaoConfirmaPedido = By.cssSelector("#payment-confirmation button");
 	
 	public CheckoutPage(WebDriver driver) {
 		this.driver = driver;
@@ -54,5 +55,10 @@ public class CheckoutPage {
  	 
  	 public boolean estaSelecionadoCheckboxIAgree() {
  		return driver.findElement(checkboxIAgree).isSelected();
+ 	 }
+ 	 
+ 	 public PedidoPage clicarBotaoConfirmaPedido() {
+ 		 driver.findElement(botaoConfirmaPedido).click();
+ 		 return new PedidoPage(driver);
  	 }
 }

@@ -3,16 +3,14 @@ package homepage;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
-
 import org.junit.jupiter.api.Test;
-
 import base.BaseTests;
 import pages.CarrinhoPage;
 import pages.CheckoutPage;
 import pages.LoginPage;
 import pages.ModalProdutoPage;
+import pages.PedidoPage;
 import pages.ProdutoPage;
 import util.Funcoes;
 
@@ -192,5 +190,22 @@ public class HomePageTests extends BaseTests {
  		// click on the "I agree" option
  		checkoutPage.selecionarCheckBoxIAgree();
  		assertTrue(checkoutPage.estaSelecionadoCheckboxIAgree());
+ 	}
+ 	
+ 	@Test
+ 	public void finalizarPedido_pedidoFinalizadoComSucesso() {
+ 		IrParaCheckout_FreteMaisPagamentoEnderecoListadosOk();
+ 		
+ 		// click the button to confirm order
+ 		PedidoPage pedidoPage = checkoutPage.clicarBotaoConfirmaPedido();
+ 		// validate screen values
+ 		assertTrue(pedidoPage.obter_textoPedidoConfirmado().endsWith("YOUR ORDER IS CONFIRMED"));
+ 		
+ 		assertThat(pedidoPage.obter_email(), is("marcelo@teste.com"));
+ 		assertThat(pedidoPage.obter_totalProdutos(), is(esperado_subtotalProduto));
+ 		assertThat(pedidoPage.obter_totalTaxIncl(), is(esperado_totalTaxIncTotal));
+ 		assertThat(pedidoPage.obter_metodoPagamento(), is("check"));
+ 		
+ 		
  	}
 }
