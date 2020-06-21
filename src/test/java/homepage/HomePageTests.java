@@ -5,6 +5,9 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+
 import base.BaseTests;
 import pages.CarrinhoPage;
 import pages.CheckoutPage;
@@ -61,6 +64,29 @@ public class HomePageTests extends BaseTests {
 		assertThat(homePage.estaLogado("Marcelo Bittencourt"), is (true));
 		carregarPaginaInicial();
 	}
+	
+	@ParameterizedTest
+	@CsvFileSource(resources = "/massaTeste_Login.csv", numLinesToSkip = 1, delimiter = ';')
+	public void testLogin_UsuarioLogadoComDadosValidos(String nomeTeste, String email, String password, String nomeUsuario, String resultado) {
+		loginPage = homePage.clicarBotaoSignIn();
+		loginPage.preencherEmail(email);
+		loginPage.preencherPassword(password);
+		loginPage.clicarBotaoSignIn();
+		
+		boolean esperado_loginOK;
+		if (resultado.equals("positivo"))
+			esperado_loginOK = true;
+		else
+			esperado_loginOK = false;
+			
+		assertThat(homePage.estaLogado(nomeUsuario), is (esperado_loginOK));
+		
+		if (esperado_loginOK)
+			homePage.clicarBotaoSignOut();
+		
+		carregarPaginaInicial();	
+	}
+	
 	
 	ModalProdutoPage modalProdutoPage;
 	@Test
@@ -205,7 +231,5 @@ public class HomePageTests extends BaseTests {
  		assertThat(pedidoPage.obter_totalProdutos(), is(esperado_subtotalProduto));
  		assertThat(pedidoPage.obter_totalTaxIncl(), is(esperado_totalTaxIncTotal));
  		assertThat(pedidoPage.obter_metodoPagamento(), is("check"));
- 		
- 		
  	}
 }
