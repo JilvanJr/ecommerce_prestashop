@@ -25,21 +25,21 @@ public class ModalProdutoPage {
 	
 	public String obterMensagemProdutoAdicionado() {
 		// Incluindo espera para que meu elemento seja carregado na tela 
-		//Informo que meu FluentWait é conectado a um driver
+		//Informo que meu FluentWait ï¿½ conectado a um driver
 		FluentWait wait = new FluentWait(driver)
-		// Duração de 5 segundos
+		// Duraï¿½ï¿½o de 5 segundos
 				.withTimeout(Duration.ofSeconds(5)).
-		// Verifica de 1 em 1 segundo, até 5
+		// Verifica de 1 em 1 segundo, atï¿½ 5
 				pollingEvery(Duration.ofSeconds(1)).
-		// Ignora a exceção que retornou no console "NoSuchElementException" para conseguir prosseguir
+		// Ignora a exceï¿½ï¿½o que retornou no console "NoSuchElementException" para conseguir prosseguir
 				ignoring(NoSuchElementException.class);
-		// Esperar até que minha condição esperada este visivel, meu elemento
+		// Esperar atï¿½ que minha condiï¿½ï¿½o esperada este visivel, meu elemento
 		wait.until(ExpectedConditions.visibilityOfElementLocated(mensagemProdutoAdicionado));
 		
 		return driver.findElement(mensagemProdutoAdicionado).getText();
 	}
 	
-	public String obterDescriçãoProduto() {
+	public String obterDescricaoProduto() {
 		return driver.findElement(descricaoProduto).getText();
 	}
 	
@@ -52,11 +52,17 @@ public class ModalProdutoPage {
 	}
 	
 	public String obterCorProduto() {
-		return driver.findElements(listaValoresInformados).get(1).getText();
+		if (driver.findElements(listaValoresInformados).size() == 3)
+			return driver.findElements(listaValoresInformados).get(1).getText();
+		else
+			return "N/A";
 	}
 	
 	public String obterQuantidadeProduto() {
-		return driver.findElements(listaValoresInformados).get(2).getText();
+		if (driver.findElements(listaValoresInformados).size() == 3)
+			return driver.findElements(listaValoresInformados).get(2).getText();
+		else 
+			return driver.findElements(listaValoresInformados).get(1).getText();
 	}
 	
 	public String obterSubTotal() {
