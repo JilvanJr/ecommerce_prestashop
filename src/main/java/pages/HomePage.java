@@ -20,7 +20,7 @@ public class HomePage {
 	private By usuarioLogado = By.cssSelector("#_desktop_user_info span.hidden-sm-down");
 	private By botaoSignOut = By.cssSelector("a.logout");
 	
-	// O que é construtor
+	// O que ï¿½ construtor
 	public HomePage(WebDriver driver) {
 		this.driver = driver;
 	}
@@ -68,5 +68,18 @@ public class HomePage {
 	
 	public void clicarBotaoSignOut() {
 		driver.findElement(botaoSignOut).click();
+	}
+
+	public void carregarPaginaInicial() {
+		driver.get("https://marcelodebittencourt.com/demoprestashop/");
+		
+	}
+
+	public String obterTituloPagina() {
+		return driver.getTitle();
+	}
+
+	public boolean estaLogado() {
+		return !"Sign in".contentEquals(driver.findElement(usuarioLogado).getText());
 	}
 }

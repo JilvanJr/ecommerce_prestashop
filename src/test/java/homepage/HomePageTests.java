@@ -81,6 +81,8 @@ public class HomePageTests extends BaseTests {
 			
 		assertThat(homePage.estaLogado(nomeUsuario), is (esperado_loginOK));
 		
+		capturarTela(nomeTeste, resultado);
+		
 		if (esperado_loginOK)
 			homePage.clicarBotaoSignOut();
 		
@@ -116,7 +118,7 @@ public class HomePageTests extends BaseTests {
 		// Elemento retorna um ponto no inicio, abaixo me retorna apenas o final 
 		assertTrue(modalProdutoPage.obterMensagemProdutoAdicionado().endsWith("Product successfully added to your shopping cart"));
 		
-		assertThat(modalProdutoPage.obterDescriçãoProduto().toUpperCase(), is(nomeProduto_ProdutoPage.toUpperCase()));
+		assertThat(modalProdutoPage.obterDescricaoProduto().toUpperCase(), is(nomeProduto_ProdutoPage.toUpperCase()));
 		
 		String precoProdutoString = modalProdutoPage.obterPrecoProduto();
 		precoProdutoString = precoProdutoString.replace("$", "");
@@ -197,7 +199,7 @@ public class HomePageTests extends BaseTests {
  		
  		assertThat(Funcoes.removeCifraoDevolveDouble(checkoutPage.obter_totalTaxIncTotal()), is(esperado_totalTaxExclTotal));
  		//assertThat(checkoutPage.obter_nomeCliente(), is(esperado_nomeCliente));
- 		assertTrue(checkoutPage.obter_nomeCliente().startsWith(esperado_nomeCliente)); // startsWith = começa com
+ 		assertTrue(checkoutPage.obter_nomeCliente().startsWith(esperado_nomeCliente)); // startsWith = comeï¿½a com
  		checkoutPage.clicarBotaoContinueAddress();
  		
  		String encontrado_shippingValor = checkoutPage.obter_shippingValor();
